@@ -1,14 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import Home from '../src/Components/Home/Home'
 
 function App() {
   return (
-    <div className="App">
-        <button className="btn btn-success">test bootstrap</button>
+    <div>
+    <Home></Home>
     </div>
+        
+        
+   
   );
 }
 
 export default App;
+

@@ -1,0 +1,46 @@
+
+body, html {
+    height: 100%;
+    }
+.bg{
+    background-image: url('https://iili.io/2uKyEg.png');
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+
+
+    
+ 
+}
+.overlay{
+    background:#80808082;
+    width:100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+}
+.img{
+   
+}
+.img:hover{
+    border: 2px solid yellow;
+    border-radius: 17px;
+}
+
+
+
+
+.logo{
+    width: 100px;
+    color: azure;
+    
+}
+.ma{
+    margin-left: 100px;
+}
