@@ -7,9 +7,6 @@ body{
     background-size: cover;
     color:#fff;
 }
-
-
-
 .img:hover{
     border: 2px solid yellow;
     border-radius: 17px;

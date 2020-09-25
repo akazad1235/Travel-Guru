@@ -37,6 +37,7 @@ const Header = () => {
                         {
                             loggedInUser.name ? <button  className="nav-link text-white btn btn-warning" href="#" onClick={() => setLoggedInUser({})}>Logout</button>:<Link to="/login" className="nav-link text-white btn btn-warning" href="#" onClick={() => setLoggedInUser({})}>Login</Link>
                         }
+                       
                     </li>
                     </ul>
                     

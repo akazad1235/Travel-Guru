@@ -72,10 +72,7 @@ function Login() {
             const {displayName , email} = res.user;
             const NewUser = {name : displayName ,  email:email}
             setLoggedInUser(NewUser);
-            updateUserName(displayName)
-          //  newUser.updateProfile({
-          //      displayName:loggedInUser.name
-          //  })
+            updateUserName(displayName);
             history.replace(from);
    })
    .catch(function(error) {
@@ -83,7 +80,6 @@ function Login() {
                newUserInfo.message = error.message;
                newUserInfo.success = false;
                setLoggedInUser(newUserInfo);
-               console.log(newUserInfo.messag);
      });
    }
     if (!newUser && loggedInUser.email && loggedInUser.password) {
@@ -93,6 +89,8 @@ function Login() {
         const googleNewUser = {name : displayName ,  email:email}
         setLoggedInUser(googleNewUser);
          history.replace(from);
+
+       console.log(googleNewUser);
       })
       .catch(function(error) {
        
@@ -108,19 +106,19 @@ function Login() {
     event.preventDefault();
   }
 
-  const updateUserName = (name)=>{
+    const updateUserName = (name)=>{
 
-    let user = firebase.auth().currentUser;
+      let user = firebase.auth().currentUser;
 
-        user.updateProfile({
-        displayName: name,
-        }).then(function() {
-        console.log('user update success');
-        }).catch(function(error) {
-            console.log('user update faild', error);
-        });
+          user.updateProfile({
+          displayName: name,
+          }).then(function() {
+          console.log('user update success');
+          }).catch(function(error) {
+              console.log('user update faild', error);
+          });
 
-  }
+    }
 
   return (
     <div className="container">

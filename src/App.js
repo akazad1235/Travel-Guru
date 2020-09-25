@@ -12,8 +12,6 @@ import Header from './Components/Header/Header';
 import SearchBookingDetails from './Components/SearchDetails/SearchBookingDetails';
 import Login from './Components/Login/Login';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
-import Shipment from './Components/Shipment/Shipment';
-
 
 
 export const UserContext = createContext();
@@ -37,7 +35,6 @@ function App() {
         </Route>
         <Route path='/booking/:id'>
           <Booking></Booking>
-         
         </Route>
         <PrivateRoute path='/details/:key'>
           <SearchBookingDetails></SearchBookingDetails>
@@ -45,16 +42,12 @@ function App() {
         <PrivateRoute path='/searchBooking'>
           <SearchBookingDetails></SearchBookingDetails>
         </PrivateRoute>
-        <PrivateRoute path='/shipment'>
-          <Shipment></Shipment>
-        </PrivateRoute>
         <Route path="/login">
           <Login></Login>
         </Route>
         <Route path ='/'>
          <Home></Home>
         </Route>
-
       </Switch>
 
     </Router>
