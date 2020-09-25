@@ -1,0 +1,13 @@
+.content-area{
+    width:500px;
+    margin:0 auto;
+}
+.form-area{
+    width:500px;
+    margin:0 auto;
+    border:1px solid gray;
+    padding:30px
+}
+.forgate-pass{
+    margin-left: 150px;
+}

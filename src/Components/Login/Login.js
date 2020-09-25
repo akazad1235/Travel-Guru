@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useContext, useState } from 'react';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import firebaseConfig from './FirebaseConfig';
+import firebaseConfig from '../../FirebaseConfig';
+import './Login.css'
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { UserContext } from '../../App';
+
 
 
 firebase.initializeApp(firebaseConfig);
@@ -24,7 +27,12 @@ function Login() {
     success:false
 
 
-  })
+  });
+
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const history = useHistory();
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
 
   const handleSignIn =()=> {
     firebase.auth().signInWithPopup(provider)
@@ -97,6 +105,8 @@ function Login() {
         newUserInfo.error = '';
         newUserInfo.success = true;
         setUser(newUserInfo);
+        updateUserName(user.name);
+        
 
       })
       .catch(function(error) {
@@ -114,6 +124,9 @@ function Login() {
         newUserInfo.error = '';
         newUserInfo.success = true;
         setUser(newUserInfo);
+        setLoggedInUser(newUserInfo);
+        history.replace(from);
+        console.log('sign in user info'+ res.user);
       })
       .catch(function(error) {
        
@@ -128,14 +141,28 @@ function Login() {
     event.preventDefault();
   }
 
+  const updateUserName = (name)=>{
+
+    let user = firebase.auth().currentUser;
+
+        user.updateProfile({
+        displayName: name,
+        }).then(function() {
+        console.log('user update success');
+        }).catch(function(error) {
+            console.log('user update faild', error);
+        });
+
+  }
+
   return (
-    <div className="App">
-      {
+    <div className="container">
+      {/* {
         user.isLoggedIn ? <button onClick={handleSignOut}>Sign Out</button>:<button onClick={handleSignIn}>Sign in</button>
-      }
+      } */}
 
 
- {
+ {/* {
   user.isLoggedIn && 
   <div>
     <h1>name:{user.name}</h1>
@@ -155,11 +182,58 @@ function Login() {
         <input type="text" name="email" onBlur={handleChange} placeholder="please enter your email"/><br/> 
         <input type="password" name="password" onBlur={handleChange} placeholder="please enter your passowrd" /><br/>
         <input type="submit" value="submit" name="submit"/>
-  </form>
-<p style={{color:'red'}}>{user.error}</p>
-{
-  user.success && <p style={{color:'green'}}> User {newUser ? 'Created':'Logged IN'} Successfully</p>
-}
+  </form> */}
+
+
+
+    <div className="content-area">
+    <p style={{color:'red'}}>{user.error}</p>
+        {
+        user.success && <p style={{color:'green'}}> User {newUser ? 'Created':'Logged IN'} Successfully</p>
+        }
+            <div className="form-area">
+                <h4>{newUser ? 'Sign Up' : 'Login' }</h4>
+            <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        {
+                            newUser && <div>
+                                <label >Name</label>
+                        <input type="text" name="name" onBlur={handleChange} className="form-control" />
+                            </div>
+                        }
+                        
+                    </div>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input type="text" name="email" onBlur={handleChange}  className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        <label>Passowrd</label>
+                        <input type="password" name="password" onBlur={handleChange} className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        {
+                            !newUser &&  
+                            <div className="d-flex">
+                                <div><input type="checkbox" name="name" onBlur={handleChange}/>Remember Passowrd</div>
+                                <div className="text-warning forgate-pass"> <Link to="">Forgate Passowrd</Link></div>
+                            </div>
+                           
+                        }
+                        
+                    </div>
+
+                    <button type="submit" className="form-control btn btn-warning">{newUser? 'Create An Account': 'Login'}</button>
+                    <p className="text-center" style={{marginTop:'10px'}}>{newUser? 'Alreade Have An Account?': 'Dont Have An Account '}<button onClick={ () => setNewUser(!newUser)}> {newUser? 'Logi in': 'Sign Up'}</button></p>
+            </form>
+           
+            </div>
+             <p>or</p>
+            <button className="btn btn-info form-control" onClick={handleSignIn}>Google Sign In</button>
+
+    </div>
+
+
     </div>
   );
 }

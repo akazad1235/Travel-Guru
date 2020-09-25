@@ -17,7 +17,10 @@ const Booking = () => {
   // const getResort = Resorts.find( resortPlace => console.log(resortPlace.id === resortKey));
 
   const handleBooking = ()=> {
-        history.push('/SearchBookingDetails');
+        history.push('/searchBooking');
+  }
+  const handleShipment = () => {
+    history.push('/shipment');
   }
     return (
         <div className="bg">
@@ -56,6 +59,9 @@ const Booking = () => {
                                 <button type="submit" className="form-control btn btn-warning">Booking</button>
                         </form>
                         <Link to={`/details/${id}`}>Booking</Link>
+
+                        <button onClick={handleBooking}>Confirm Booking</button>
+                        <button onClick={handleShipment}>Confirm sip</button>
                        </div>
                     </div>
                 </div>

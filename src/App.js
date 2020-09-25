@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import Home from '../src/Components/Home/Home'
 import Booking from './Components/Booking/Booking';
 
@@ -11,18 +11,18 @@ import {
 import Header from './Components/Header/Header';
 import SearchBookingDetails from './Components/SearchDetails/SearchBookingDetails';
 import Login from './Components/Login/Login';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import Shipment from './Components/Shipment/Shipment';
 
 
 
-
+export const UserContext = createContext();
 function App() {
-
-  
-
-  
-  
+  const [loggedInUser, setLoggedInUser] = useState({});
 
   return (
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      <p>email:{loggedInUser.email}</p>
     <Router>
       <Header></Header>
       <Switch>
@@ -31,19 +31,29 @@ function App() {
         </Route>
         <Route path='/booking/:id'>
           <Booking></Booking>
+         
         </Route>
-        <Route path='/details/:key'>
+        <PrivateRoute path='/details/:key'>
           <SearchBookingDetails></SearchBookingDetails>
-        </Route>
+        </PrivateRoute>
+        <PrivateRoute path='/searchBooking'>
+          <SearchBookingDetails></SearchBookingDetails>
+        </PrivateRoute>
+        <PrivateRoute path='/shipment'>
+          <Shipment></Shipment>
+        </PrivateRoute>
         <Route path="/login">
           <Login></Login>
+        </Route>
+        <Route path ='/'>
+         <Home></Home>
         </Route>
 
       </Switch>
 
     </Router>
 
-        
+      </UserContext.Provider>
         
    
   );
