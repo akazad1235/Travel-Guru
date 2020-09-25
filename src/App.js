@@ -18,11 +18,19 @@ import Shipment from './Components/Shipment/Shipment';
 
 export const UserContext = createContext();
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser,setLoggedInUser]= useState({
+    isLoggedIn : false,
+    name :'',
+    email:'',
+    password:'',
+    error:'',
+    success:false
+  });
 
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      <p>email:{loggedInUser.email}</p>
+      <p>{console.log(loggedInUser.email)}</p>
+      <p>email:{loggedInUser.name}</p>
     <Router>
       <Header></Header>
       <Switch>

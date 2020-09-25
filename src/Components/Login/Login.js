@@ -17,37 +17,21 @@ function Login() {
   var provider = new firebase.auth.GoogleAuthProvider();
   const [newUser, setNewUser] = useState(false);
 
-  const [user, setUser] = useState({
-    isLoggedIn : false,
-    name :'',
-    email:'',
-    password:'',
-    photo:'',
-    error:'',
-    success:false
-
-
-  });
+  
 
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
   let { from } = location.state || { from: { pathname: "/" } };
 
-  const handleSignIn =()=> {
+
+  const handleGoogleSignIn =()=> {
     firebase.auth().signInWithPopup(provider)
     .then( res => {
-       const {displayName, email, photoURL} = res.user;
-
-       const isLoggedInUser = {
-         isLoggedIn:true,
-         name: displayName,
-         email: email,
-         photo:photoURL
-       }
-
-       setUser(isLoggedInUser);
-      
+       const {displayName, email} = res.user;
+       const googleNewUser = {name : displayName ,  email : email};
+       setLoggedInUser(googleNewUser);
+       history.replace(from);
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -61,23 +45,7 @@ function Login() {
     });
   }
 
-  const handleSignOut = () => {
-    firebase.auth().signOut()
-    .then(res => {
-      const isSignOutUser = {
-        isLoggedIn:false,
-        name:'',
-        email:'',
-        photo:'',
-       
-      }
-
-      setUser(isSignOutUser);
-
-    }).catch(function(error) {
-      // An error happened.
-    });
-  }
+  
   const handleChange = (event) => {
           
            let isFormValid ;
@@ -91,49 +59,48 @@ function Login() {
               isFormValid= passwordValid && passwordHasNumber;
            }
             if(isFormValid){
-              const newUserInfo = {...user};
+              const newUserInfo = {...loggedInUser};
               newUserInfo[event.target.name] = event.target.value;
-              setUser(newUserInfo);
+              setLoggedInUser(newUserInfo);
             }
   }
   const handleSubmit = (event)=>{
 
-    if (newUser && user.email && user.password) {
-      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+    if (newUser && loggedInUser.email && loggedInUser.password) {
+      firebase.auth().createUserWithEmailAndPassword(loggedInUser.email, loggedInUser.password)
+       .then(res => {
+            const {displayName , email} = res.user;
+            const NewUser = {name : displayName ,  email:email}
+            setLoggedInUser(NewUser);
+          
+          //  newUser.updateProfile({
+          //      displayName:loggedInUser.name
+          //  })
+            history.replace(from);
+   })
+   .catch(function(error) {
+       const newUserInfo = { ...loggedInUser };
+               newUserInfo.message = error.message;
+               newUserInfo.success = false;
+               setLoggedInUser(newUserInfo);
+               console.log(newUserInfo.messag);
+     });
+   }
+    if (!newUser && loggedInUser.email && loggedInUser.password) {
+      firebase.auth().signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password)
       .then(res => {
-        const newUserInfo = {...user};
-        newUserInfo.error = '';
-        newUserInfo.success = true;
-        setUser(newUserInfo);
-        updateUserName(user.name);
-        
-
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        const newUserInfo = {...user};
-        newUserInfo.error = error.message;
-        newUserInfo.success=false;
-        setUser(newUserInfo);
-      });
-    }
-    if (!newUser && user.email && user.password) {
-      firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-      .then(res => {
-        const newUserInfo = {...user};
-        newUserInfo.error = '';
-        newUserInfo.success = true;
-        setUser(newUserInfo);
-        setLoggedInUser(newUserInfo);
-        history.replace(from);
-        console.log('sign in user info'+ res.user);
+        const {displayName , email} = res.user;
+        const googleNewUser = {name : displayName ,  email:email}
+        setLoggedInUser(googleNewUser);
+         history.replace(from);
       })
       .catch(function(error) {
        
-        const newUserInfo = {...user};
+        const newUserInfo = {...loggedInUser};
         newUserInfo.error = error.message;
         newUserInfo.success=false;
-        setUser(newUserInfo);
+        setLoggedInUser(newUserInfo);
+        console.log(newUserInfo.messag);
       });
       
     }
@@ -157,40 +124,7 @@ function Login() {
 
   return (
     <div className="container">
-      {/* {
-        user.isLoggedIn ? <button onClick={handleSignOut}>Sign Out</button>:<button onClick={handleSignIn}>Sign in</button>
-      } */}
-
-
- {/* {
-  user.isLoggedIn && 
-  <div>
-    <h1>name:{user.name}</h1>
-    <p>email: {user.email}</p>
-    <img  src={user.photo} alt="profile pic"/>
-    
-  </div>
- }
-  <h1>User Authintication</h1>
-  <h4>email:{user.email}</h4>
-  <h4>passowrd:{user.password}</h4> 
-
-    <button onClick={ () => setNewUser(!newUser)}> click</button>
-
-  <form onSubmit={handleSubmit}>
-        {newUser && <input type="text" name="name" onBlur={handleChange} placeholder="please enter your name"/>}<br/> 
-        <input type="text" name="email" onBlur={handleChange} placeholder="please enter your email"/><br/> 
-        <input type="password" name="password" onBlur={handleChange} placeholder="please enter your passowrd" /><br/>
-        <input type="submit" value="submit" name="submit"/>
-  </form> */}
-
-
-
     <div className="content-area">
-    <p style={{color:'red'}}>{user.error}</p>
-        {
-        user.success && <p style={{color:'green'}}> User {newUser ? 'Created':'Logged IN'} Successfully</p>
-        }
             <div className="form-area">
                 <h4>{newUser ? 'Sign Up' : 'Login' }</h4>
             <form onSubmit={handleSubmit}>
@@ -223,13 +157,13 @@ function Login() {
                         
                     </div>
 
-                    <button type="submit" className="form-control btn btn-warning">{newUser? 'Create An Account': 'Login'}</button>
+                    <button type="submit" className="form-control btn btn-warning">{newUser ? 'Create An Account': 'Login'}</button>
                     <p className="text-center" style={{marginTop:'10px'}}>{newUser? 'Alreade Have An Account?': 'Dont Have An Account '}<button onClick={ () => setNewUser(!newUser)}> {newUser? 'Logi in': 'Sign Up'}</button></p>
             </form>
            
             </div>
              <p>or</p>
-            <button className="btn btn-info form-control" onClick={handleSignIn}>Google Sign In</button>
+            <button className="btn btn-info form-control" onClick={handleGoogleSignIn}>Google Sign In</button>
 
     </div>
 
