@@ -4,7 +4,6 @@ import { UserContext } from '../../App';
 
 const PrivateRoute = ({ children, ...rest }) => {
         const [loggedInUser, setLoggedInUser] = useContext( UserContext)
-        console.log(loggedInUser);
     return (
       <Route
         {...rest}
@@ -26,6 +25,3 @@ const PrivateRoute = ({ children, ...rest }) => {
 
 
 export default PrivateRoute;
-
-// A wrapper for <Route> that redirects to the login
-// screen if you're not yet authenticated.

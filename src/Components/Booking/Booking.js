@@ -1,33 +1,15 @@
 import React from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Resorts from '../../FakeData/FakeData';
 import './Booking.css'
 
-
-
 const Booking = () => {
-    const history = useHistory();
-
-   let { id } =  useParams(); 
-   
+   let { id } =  useParams();  
     const ResortBooking = Resorts.find(booking => booking.id === id); 
      const {  name, description} = ResortBooking;
-  //console.log( id);
-
-  // const getResort = Resorts.find( resortPlace => console.log(resortPlace.id === resortKey));
-
-  const handleBooking = ()=> {
-        history.push('/searchBooking');
-  }
-  const handleShipment = () => {
-    history.push('/shipment');
-  }
     return (
         <div className="bg">
             <div className="container">
-               
-
-                
                </div>
                <div style={{display:'flex', marginTop:'50px'}}>
                     <div className="half">
@@ -36,7 +18,7 @@ const Booking = () => {
                     </div>
                     <div className="half">
                        <div className="bookingForm">
-                        <form onSubmit={handleBooking }>
+                        <form>
                                 <div className="form-group">
                                     <label >Origin</label>
                                     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
@@ -56,12 +38,8 @@ const Booking = () => {
                                     <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
                                 </div>
                                </div>
-                                <button type="submit" className="form-control btn btn-warning">Booking</button>
+                                <Link to={`/details/${id}`}><span className="form-control btn btn-warning"> Booking </span></Link>
                         </form>
-                        <Link to={`/details/${id}`}>Booking</Link>
-
-                        <button onClick={handleBooking}>Confirm Booking</button>
-                        <button onClick={handleShipment}>Confirm sip</button>
                        </div>
                     </div>
                 </div>

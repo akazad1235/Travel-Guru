@@ -1,5 +1,9 @@
+body{
+    color:#fff;
+}
 .search-details{
-    width:50%
+    width:50%;
+    color:#fff;
 }
 .map{
     width:50%

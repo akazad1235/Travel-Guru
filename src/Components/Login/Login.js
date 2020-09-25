@@ -72,7 +72,7 @@ function Login() {
             const {displayName , email} = res.user;
             const NewUser = {name : displayName ,  email:email}
             setLoggedInUser(NewUser);
-          
+            updateUserName(displayName)
           //  newUser.updateProfile({
           //      displayName:loggedInUser.name
           //  })
@@ -163,7 +163,7 @@ function Login() {
            
             </div>
              <p>or</p>
-            <button className="btn btn-info form-control" onClick={handleGoogleSignIn}>Google Sign In</button>
+            <button className="btn btn-info form-control" onClick={handleGoogleSignIn}>Login With Google</button>
 
     </div>
 

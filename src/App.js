@@ -29,8 +29,6 @@ function App() {
 
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      <p>{console.log(loggedInUser.email)}</p>
-      <p>email:{loggedInUser.name}</p>
     <Router>
       <Header></Header>
       <Switch>
@@ -63,7 +61,6 @@ function App() {
 
       </UserContext.Provider>
         
-   
   );
 }
 

@@ -8,14 +8,8 @@ const SearchBookingDetails = () => {
             console.log(key);
             const roomDetails = RoomeDetails.find(rmDetails => rmDetails.id === key); 
             const {  name, description, photo, fare} = roomDetails;
-
-           console.log(name);
-          // console.log(roomDetails);
-
-    
-
     return (
-        <div className="container" >
+        <div className="container" style={{color:'white'}} >
             <h6>121 stays apr 2020</h6>
             <h3>Stay In <strong>{name}</strong></h3>
             <div className="wrapper d-flex" >
@@ -32,11 +26,8 @@ const SearchBookingDetails = () => {
                             </div>
                             </div>
                         </div>)
-                    }
-                    
+                    } 
                 </div>
-                
-                
                 <div className="maps">This is map</div>
             </div>
         </div>
